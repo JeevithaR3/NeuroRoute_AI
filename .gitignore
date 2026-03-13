@@ -4,3 +4,6 @@ backend/datasets/
 backend/logs/
 __pycache__/
 *.pyc
+**/node_modules/
+
+

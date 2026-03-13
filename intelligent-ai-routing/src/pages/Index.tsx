@@ -208,7 +208,9 @@ const Index = () => {
         <div className="max-w-2xl mx-auto text-center space-y-8">
           <h2 className="text-3xl md:text-4xl font-bold">Get Started</h2>
           <p className="text-muted-foreground">
-            {user ? "Download NeuroRoute and start routing smarter today." : "Create an account to access downloads, documentation, and all features."}
+            {user
+              ? "Download NeuroRoute and start routing smarter today."
+              : "Create an account to access downloads, documentation, and all features."}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             {user ? (
@@ -219,8 +221,15 @@ const Index = () => {
                 <Button size="lg" variant="outline">
                   <Terminal className="mr-2 h-4 w-4" /> Middleware
                 </Button>
-                <Button size="lg" variant="outline">
-                  <Github className="mr-2 h-4 w-4" /> GitHub
+                {/* GitHub Button with link */}
+                <Button size="lg" variant="outline" asChild>
+                  <a
+                    href="https://github.com/JeevithaR3/NeuroRoute_AI"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Github className="mr-2 h-4 w-4" /> GitHub
+                  </a>
                 </Button>
               </>
             ) : (

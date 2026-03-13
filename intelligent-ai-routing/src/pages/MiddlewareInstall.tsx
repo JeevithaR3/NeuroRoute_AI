@@ -6,7 +6,7 @@ const MiddlewareInstall = () => (
     <div className="space-y-8 max-w-2xl">
       <div>
         <h3 className="text-lg font-semibold mb-3">1. Clone & Install</h3>
-        <CodeBlock title="Terminal">{`git clone https://github.com/neuroroute
+        <CodeBlock title="Terminal">{`git clone https://github.com/JeevithaR3/NeuroRoute_AI.git
 cd neuroroute
 pip install -r requirements.txt`}</CodeBlock>
       </div>
@@ -16,7 +16,7 @@ pip install -r requirements.txt`}</CodeBlock>
       </div>
       <div className="glass rounded-xl p-6">
         <p className="text-sm text-muted-foreground">
-          The middleware exposes REST APIs that the browser extension connects to. By default, the server runs on <code className="text-primary font-mono">http://localhost:5000</code>.
+          The middleware exposes REST APIs that the browser extension connects to. By default, the server runs on <code className="text-primary font-mono">http://localhost:3000</code>.
         </p>
       </div>
     </div>
