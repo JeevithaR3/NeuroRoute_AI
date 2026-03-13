@@ -10,8 +10,7 @@ const SectionWrapper = ({ children, className = "", id }: { children: ReactNode;
     transition={{ duration: 0.6, ease: "easeOut" }}
     className={`py-20 ${className}`}
   >
-    <div className="container">{children}</div>
-  </motion.section>
+<div className="w-full px-8">{children}</div>  </motion.section>
 );
 
 export default SectionWrapper;

@@ -62,15 +62,21 @@ const Index = () => {
           >
             {user ? (
               <>
-                <Button size="lg" className="bg-gradient-primary text-primary-foreground shadow-glow">
-                  <Download className="mr-2 h-4 w-4" /> Download Extension
-                </Button>
+               <Button
+  size="lg"
+  className="bg-gradient-primary text-primary-foreground shadow-glow"
+  asChild
+>
+  <a href="/neuroroute-extension.zip" download>
+    <Download className="mr-2 h-4 w-4" /> Download Extension
+  </a>
+</Button>
                 <Button size="lg" variant="outline">
                   <Terminal className="mr-2 h-4 w-4" /> Download Middleware
                 </Button>
-                <Button size="lg" variant="ghost" asChild>
+                {/* <Button size="lg" variant="ghost" asChild>
                   <Link to="/architecture"><ArrowRight className="mr-2 h-4 w-4" /> View Documentation</Link>
-                </Button>
+                </Button> */}
               </>
             ) : (
               <>
@@ -104,7 +110,7 @@ const Index = () => {
                 <div key={step.label} className="flex items-center gap-3">
                   <div className="flex flex-col items-center gap-2">
                     <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center">
-                      <step.icon className="h-6 w-6 text-primary" />
+                      <step.icon className="h-6 w-6 text-white" />
                     </div>
                     <span className="text-xs font-medium">{step.label}</span>
                   </div>
@@ -172,7 +178,7 @@ const Index = () => {
           {features.map((f) => (
             <div key={f.title} className="glass rounded-xl p-6 space-y-3 hover:shadow-glow transition-shadow duration-300">
               <div className="w-12 h-12 rounded-lg bg-accent flex items-center justify-center">
-                <f.icon className="h-6 w-6 text-primary" />
+                <f.icon className="h-6 w-6 text-white" />
               </div>
               <h3 className="font-semibold text-lg">{f.title}</h3>
               <p className="text-sm text-muted-foreground">{f.desc}</p>
