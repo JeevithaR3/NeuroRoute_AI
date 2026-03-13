@@ -1,2 +1,6 @@
 # Ignore environment files
 middleware/.env
+backend/datasets/
+backend/logs/
+__pycache__/
+*.pyc
