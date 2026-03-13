@@ -43,3 +43,9 @@ print(name, age)",summarize,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,
 2026-03-13T11:54:35.477400,2-2,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,0.2,1
 2026-03-13T12:09:01.271335,"NeuroRoute
 Green AI Router — Layer 3 Monitoring",summarize,MEDIUM,technology,medium_model,Medium LLM,0.003,0.0012,0.0045,0.26,8
+2026-03-13T12:39:25.549514,jagsua,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,0.0,1
+2026-03-13T12:40:18.946554,swd,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,0.0,1
+2026-03-13T12:40:48.692464,swd,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,6.63,1
+2026-03-13T12:44:04.630839,jgduwfguef,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,1.06,1
+2026-03-13T13:42:32.250776,5-6,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,0.3,1
+2026-03-13T13:43:01.187515,"print(""hello world"")",ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,0.2,2
