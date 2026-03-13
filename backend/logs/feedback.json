@@ -1,0 +1,32 @@
+[
+  {
+    "query": "These include: sepals, which are modified leaves that support the flower; petals, often designed to ",
+    "feedback": "helpful",
+    "model": null,
+    "timestamp": "2026-03-13T08:31:36.024257"
+  },
+  {
+    "query": "Flowers, also known as blossoms and blooms, are the reproductive structures of flowering plants. Typ",
+    "feedback": "not_helpful",
+    "model": null,
+    "timestamp": "2026-03-13T09:01:47.765699"
+  },
+  {
+    "query": "Flowers, also known as blossoms and blooms, are the reproductive structures of flowering plants. Typ",
+    "feedback": "helpful",
+    "model": null,
+    "timestamp": "2026-03-13T09:01:49.708347"
+  },
+  {
+    "query": "Flowers, also known as blossoms and blooms, are the reproductive structures of flowering plants. Typ",
+    "feedback": "not_helpful",
+    "model": null,
+    "timestamp": "2026-03-13T09:01:51.534952"
+  },
+  {
+    "query": "Flowers, also known as blossoms and blooms, are the reproductive structures of flowering plants. Typ",
+    "feedback": "helpful",
+    "model": null,
+    "timestamp": "2026-03-13T09:01:52.807449"
+  }
+]
