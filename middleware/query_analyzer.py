@@ -15,8 +15,8 @@ LOW_PATTERNS = [
     r"\bwhat is\b", r"\bwho is\b", r"\bdefine\b", r"\bwhen did\b",
     r"\bhow many\b", r"\bwhat year\b", r"\bname the\b", r"\blist\b",
     r"\bcapital of\b", r"\bspell\b", r"\btranslate\b",
-    r"\d+\s*[\+\-\*\/\^]\s*\d+",
-    r"^\d[\d\s\+\-\*\/\^\(\)\.]*$",
+    r"\d+\s*[\+\-\*\/\^]\s*\d+",   # math expressions: 2+2, 10*5, etc.
+    r"^\d[\d\s\+\-\*\/\^\(\)\.]*$", # pure math strings
     r"\byes or no\b", r"\bis it\b", r"\bare you\b", r"\bhow old\b",
     r"\bwhat color\b", r"\bwhat time\b", r"\bwhat day\b",
 ]
@@ -52,9 +52,10 @@ DOMAINS = {
 }
 
 # ─── Task complexity HINTS (not overrides) ───────────────────────────────────
+# These are only applied when content analysis can't determine complexity clearly.
 
 TASK_COMPLEXITY_HINT = {
-    "ask":       "LOW",
+    "ask":       "MEDIUM",   # popup uses ask for all queries — default MEDIUM, content can lower to LOW
     "explain":   "MEDIUM",
     "summarize": "MEDIUM",
     "simplify":  "LOW",
@@ -67,20 +68,27 @@ def analyze_query(text: str, task: str = "ask") -> dict:
     text_lower = text.lower().strip()
     word_count = len(text.split())
 
+    # Detect complexity purely from content first
     content_complexity = _detect_complexity(text_lower, word_count)
+
+    # Task hint only RAISES complexity, never lowers it
+    # e.g. "2+2" with task=ask stays LOW; "explain quantum physics" with task=ask becomes MEDIUM
     task_hint = TASK_COMPLEXITY_HINT.get(task, "LOW")
 
+    # Only apply task hint if content gave LOW — this prevents task from
+    # overriding clear HIGH/MEDIUM signals from content
     if content_complexity == "LOW":
         complexity = task_hint
     else:
         complexity = content_complexity
 
+    # But pure math / very short queries always stay LOW regardless of task
     if _is_trivially_simple(text_lower, word_count):
         complexity = "LOW"
 
-    domain          = _detect_domain(text_lower)
+    domain         = _detect_domain(text_lower)
     reasoning_depth = _get_reasoning_depth(complexity)
-    summary         = _generate_summary(text, task, domain)
+    summary        = _generate_summary(text, task, domain)
 
     return {
         "task":            task,
@@ -93,31 +101,50 @@ def analyze_query(text: str, task: str = "ask") -> dict:
 
 
 def _is_trivially_simple(text_lower: str, word_count: int) -> bool:
+    """
+    Returns True ONLY for pure math expressions like 2+2, 10*5.
+    Nothing else should be force-overridden to LOW.
+    """
+    # Pure math expression only (e.g. "2+2", "100 / 4")
     if re.match(r'^[\d\s\+\-\*\/\^\(\)\.]+$', text_lower.strip()):
         return True
-    if re.search(r'\d+\s*[\+\-\*\/]\s*\d+', text_lower):
+
+    # Inline math like "what is 2+2" — keep LOW only if the whole thing is a math lookup
+    if re.search(r'\d+\s*[\+\-\*\/]\s*\d+', text_lower) and word_count <= 5:
         return True
-    if word_count <= 3:
-        return True
+
     return False
 
 
 def _detect_complexity(text_lower: str, word_count: int) -> str:
+    # HIGH patterns always win first
     for pattern in HIGH_PATTERNS:
         if re.search(pattern, text_lower):
             return "HIGH"
-    if word_count > 100:
+
+    # Long queries are always HIGH
+    if word_count > 50:
         return "HIGH"
+
+    # MEDIUM patterns
     for pattern in MEDIUM_PATTERNS:
         if re.search(pattern, text_lower):
             return "MEDIUM"
-    if word_count > 40:
+
+    # Medium-length with no signal → MEDIUM (not LOW)
+    if word_count > 15:
         return "MEDIUM"
+
+    # Explicit LOW patterns (what is, who is, define, etc.)
     for pattern in LOW_PATTERNS:
         if re.search(pattern, text_lower):
             return "LOW"
-    if word_count <= 10:
+
+    # Short query, no signal → LOW
+    if word_count <= 6:
         return "LOW"
+
+    # Default: anything 7–15 words with no pattern → MEDIUM
     return "MEDIUM"
 
 

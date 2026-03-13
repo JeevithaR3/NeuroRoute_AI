@@ -1,33 +1,33 @@
 {
-  "total_queries": 42,
-  "total_energy_kwh": 0.187,
-  "total_carbon_kg": 0.0748,
-  "total_water_liters": 0.2805,
+  "total_queries": 57,
+  "total_energy_kwh": 0.244,
+  "total_carbon_kg": 0.0976,
+  "total_water_liters": 0.366,
   "model_usage": {
-    "large_model": 11,
-    "medium_model": 23,
-    "small_model": 8
+    "large_model": 13,
+    "medium_model": 35,
+    "small_model": 9
   },
-  "avg_latency": 0.73,
+  "avg_latency": 0.96,
   "complexity_breakdown": {
-    "HIGH": 11,
-    "MEDIUM": 23,
-    "LOW": 8
+    "HIGH": 13,
+    "MEDIUM": 35,
+    "LOW": 9
   },
   "dataset_files": {
     "routing_classifier_dataset.csv": {
-      "rows": 44,
-      "size_bytes": 4242,
+      "rows": 65,
+      "size_bytes": 5750,
       "path": "C:\\Users\\Jeevitha R\\Documents\\Neuro\\NeuroRoute_AI\\backend\\datasets\\routing_classifier_dataset.csv"
     },
     "environmental_impact_dataset.csv": {
-      "rows": 41,
-      "size_bytes": 3577,
+      "rows": 55,
+      "size_bytes": 4789,
       "path": "C:\\Users\\Jeevitha R\\Documents\\Neuro\\NeuroRoute_AI\\backend\\datasets\\environmental_impact_dataset.csv"
     },
     "full_neuroroute_dataset.csv": {
-      "rows": 44,
-      "size_bytes": 11610,
+      "rows": 65,
+      "size_bytes": 14225,
       "path": "C:\\Users\\Jeevitha R\\Documents\\Neuro\\NeuroRoute_AI\\backend\\datasets\\full_neuroroute_dataset.csv"
     }
   }

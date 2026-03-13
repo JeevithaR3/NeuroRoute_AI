@@ -43,3 +43,24 @@ print(name, age)",summarize,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,
 2026-03-13T11:54:35.477400,2-2,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,0.2,1
 2026-03-13T12:09:01.271335,"NeuroRoute
 Green AI Router — Layer 3 Monitoring",summarize,MEDIUM,technology,medium_model,Medium LLM,0.003,0.0012,0.0045,0.26,8
+2026-03-13T12:33:54.691604,what is 2+2,ask,LOW,general,small_model,Small LLM,0.001,0.0004,0.0015,3.42,3
+2026-03-13T12:34:19.165283,Sepals are usually green.[11] The term tepal is usually appl,ask,HIGH,general,large_model,Large LLM,0.01,0.004,0.015,1.77,102
+2026-03-13T12:34:39.581472,Sepals are usually green.[11] The term tepal is usually appl,ask,HIGH,technology,large_model,Large LLM,0.01,0.004,0.015,1.99,107
+2026-03-13T12:39:17.352792,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,2.11,39
+2026-03-13T12:39:35.766351,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,0.71,39
+2026-03-13T12:40:50.345433,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,2.8,39
+2026-03-13T13:32:06.949259,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,0.77,39
+2026-03-13T13:33:33.776249,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,0.57,39
+2026-03-13T13:35:38.751901,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,1.42,39
+2026-03-13T13:47:00.815961,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,0.67,39
+2026-03-13T13:47:54.064089,Sepals are usually green.[11] The term tepal is usually appl,ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,2.33,39
+2026-03-13T13:52:31.466120,"Description[edit]
+Sepals are usually green.[11] The term tep",ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,2.39,40
+2026-03-13T13:53:53.772603,"what is the meaning of sepal
+
+Context (selected text only):
+",ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,1.07,49
+2026-03-13T13:54:17.079580,"what is cpu
+
+Context (selected text only):
+Sepals are usuall",ask,MEDIUM,general,medium_model,Medium LLM,0.003,0.0012,0.0045,0.49,46
