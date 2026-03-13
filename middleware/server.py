@@ -13,11 +13,27 @@ from flask import Flask, request, jsonify
 sys.path.insert(0, os.path.dirname(__file__))
 
 from query_analyzer import analyze_query
-from routing_engine import route, detect_hardware
+from routing_engine import route, detect_hardware, detect_hardware_with_load
 from model_executor import execute
 from logger import log_query, log_feedback, get_stats, get_recent_queries, get_dataset_info
 
 app = Flask(__name__)
+
+# ── Track last used model for GPU escalation simulation ──────────────────────
+# Seeded from log on startup so it survives server restarts.
+_last_model_id = None
+
+def _seed_last_model():
+    global _last_model_id
+    try:
+        recent = get_recent_queries(1)
+        if recent:
+            _last_model_id = recent[0].get("model_id")
+    except Exception:
+        pass
+
+_seed_last_model()
+# ─────────────────────────────────────────────────────────────────────────────
 
 
 @app.after_request
@@ -57,6 +73,8 @@ def index():
 
 @app.route("/neuroroute/query", methods=["POST"])
 def process_query():
+    global _last_model_id
+
     data = request.get_json(force=True)
 
     selected_text = (data.get("selected_text") or "").strip()
@@ -74,12 +92,19 @@ def process_query():
     analysis = analyze_query(selected_text, task)
     routing  = route(analysis["complexity"])
 
+    # ── Update GPU escalation tracker BEFORE responding ──────────────────────
+    _last_model_id = routing["selected_model_id"]
+    # ─────────────────────────────────────────────────────────────────────────
+
     answer, actual_latency = execute(
         routing["selected_model_id"],
         selected_text,
         task,
         analysis["complexity"],
     )
+
+    # Include compute-shift hardware data in the query response
+    hw_with_shift = detect_hardware_with_load(_last_model_id)
 
     response_data = {
         "answer":           answer,
@@ -92,7 +117,8 @@ def process_query():
         "carbon":           f"{routing['carbon_kg']:.5f} kg",
         "water":            f"{routing['water_liters']:.5f} L",
         "latency":          f"{actual_latency:.2f}s",
-        "hardware":         routing["hardware"],
+        "hardware":         hw_with_shift,
+        "compute_mode":     hw_with_shift.get("compute_mode", "CPU"),
         "model_comparison": routing["model_comparison"],
     }
 
@@ -142,9 +168,11 @@ def datasets():
     return jsonify(get_dataset_info())
 
 
+# ── Hardware endpoint: returns full compute-shift data ────────────────────────
 @app.route("/neuroroute/hardware")
 def hardware_stats():
-    return jsonify(detect_hardware())
+    return jsonify(detect_hardware_with_load(_last_model_id))
+# ─────────────────────────────────────────────────────────────────────────────
 
 
 if __name__ == "__main__":
@@ -154,6 +182,7 @@ if __name__ == "__main__":
     print("  Server   : http://localhost:3000")
     hw = detect_hardware()
     print(f"  CPU      : {hw['cpu_cores']} cores | {hw['ram_gb']} GB RAM | {hw['cpu_usage_pct']}% usage")
-    print(f"  GPU      : {'Available ✓ — ' + hw['gpu_name'] if hw['gpu_available'] else 'Not detected (CPU mode)'}")
+    print(f"  GPU      : {'Available ✓ — ' + hw['gpu_name'] if hw['gpu_available'] else 'Not detected — simulation enabled'}")
+    print(f"  Last model: {_last_model_id or 'none (seeded from log)'}")
     print("=" * 55 + "\n")
     app.run(host="0.0.0.0", port=3000, debug=True)

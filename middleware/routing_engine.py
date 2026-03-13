@@ -27,12 +27,14 @@ def detect_hardware() -> dict:
     ram_used   = round(mem.used    / (1024 ** 3), 1)
     ram_pct    = mem.percent
 
+    # GPU detection + usage
     gpu_available = False
     gpu_name      = "None"
     gpu_usage_pct = 0
     gpu_mem_used  = 0
     gpu_mem_total = 0
 
+    # Try nvidia-smi for NVIDIA GPUs
     try:
         import subprocess
         result = subprocess.run(
@@ -47,11 +49,12 @@ def detect_hardware() -> dict:
                 gpu_available = True
                 gpu_name      = parts[0]
                 gpu_usage_pct = float(parts[1])
-                gpu_mem_used  = round(float(parts[2]) / 1024, 1)
+                gpu_mem_used  = round(float(parts[2]) / 1024, 1)   # MB → GB
                 gpu_mem_total = round(float(parts[3]) / 1024, 1)
     except Exception:
         pass
 
+    # Try GPUtil as fallback
     if not gpu_available:
         try:
             import GPUtil
@@ -67,18 +70,77 @@ def detect_hardware() -> dict:
             pass
 
     return {
-        "cpu_cores":          cpu_count,
-        "cpu_usage_pct":      cpu_usage,
-        "ram_gb":             ram_gb,
-        "ram_used_gb":        ram_used,
-        "ram_pct":            ram_pct,
-        "gpu_available":      gpu_available,
-        "gpu_name":           gpu_name,
-        "gpu_usage_pct":      gpu_usage_pct,
-        "gpu_mem_used_gb":    gpu_mem_used,
-        "gpu_mem_total_gb":   gpu_mem_total,
-        "os":                 platform.system(),
+        "cpu_cores":    cpu_count,
+        "cpu_usage_pct": cpu_usage,
+        "ram_gb":       ram_gb,
+        "ram_used_gb":  ram_used,
+        "ram_pct":      ram_pct,
+        "gpu_available": gpu_available,
+        "gpu_name":     gpu_name,
+        "gpu_usage_pct": gpu_usage_pct,
+        "gpu_mem_used_gb":  gpu_mem_used,
+        "gpu_mem_total_gb": gpu_mem_total,
+        "os":           platform.system(),
     }
+
+
+def detect_hardware_with_load(last_model_id: str = None) -> dict:
+    """
+    Hardware stats PLUS compute-shift metadata.
+    compute_mode: 'CPU' | 'GPU' | 'GPU_SHIFT'
+    Always simulates GPU load when no real GPU reading > 0 is available,
+    so the dashboard reflects actual model weight correctly.
+    """
+    import random, time
+    hw = detect_hardware()
+
+    heavy      = last_model_id in ("large_model", "medium_model")
+    very_heavy = last_model_id == "large_model"
+
+    # Treat as "no real GPU" if gpu_available=False OR gpu reads as 0
+    # (some machines report gpu_available=True but 0% — still simulate)
+    has_real_gpu = hw["gpu_available"] and hw["gpu_usage_pct"] > 0
+
+    if has_real_gpu:
+        # Real live GPU reading — use it, just annotate mode
+        hw["gpu_simulated"] = False
+        if very_heavy and hw["gpu_usage_pct"] > 15:
+            hw["compute_mode"] = "GPU_SHIFT"
+        elif hw["gpu_usage_pct"] > 5 or heavy:
+            hw["compute_mode"] = "GPU"
+        else:
+            hw["compute_mode"] = "CPU"
+    else:
+        # Simulate GPU load based on which model is active
+        rng = random.Random(int(time.time() / 5))   # smooth 5-second jitter
+
+        if very_heavy:
+            sim_gpu = rng.randint(62, 88)
+            hw["compute_mode"] = "GPU_SHIFT"
+        elif heavy:
+            sim_gpu = rng.randint(35, 65)
+            hw["compute_mode"] = "GPU"
+        else:
+            # small_model or idle — CPU primary, low GPU background
+            sim_gpu = rng.randint(5, 16)
+            hw["compute_mode"] = "CPU"
+
+        hw["gpu_available"]    = True
+        hw["gpu_name"]         = "Simulated GPU (no CUDA)"
+        hw["gpu_usage_pct"]    = sim_gpu
+        hw["gpu_mem_used_gb"]  = round(sim_gpu / 100 * 8, 1)
+        hw["gpu_mem_total_gb"] = 8.0
+        hw["gpu_simulated"]    = True
+
+    # CPU effective load drops when GPU takes over
+    if hw["compute_mode"] in ("GPU", "GPU_SHIFT"):
+        hw["cpu_offload_pct"] = max(5, int(hw["cpu_usage_pct"] * 0.55))
+    else:
+        hw["cpu_offload_pct"] = hw["cpu_usage_pct"]
+
+    # Shift score 0–100: how much compute has moved to GPU
+    hw["shift_score"] = min(100, int(hw["gpu_usage_pct"] * 1.15))
+    return hw
 
 
 def estimate_environmental_impact(model_config: dict) -> dict:
@@ -86,9 +148,9 @@ def estimate_environmental_impact(model_config: dict) -> dict:
     carbon = energy * model_config["carbon_per_kwh"]
     water  = energy * model_config["water_per_kwh"]
     return {
-        "energy_kwh":   round(energy, 5),
-        "carbon_kg":    round(carbon, 5),
-        "water_liters": round(water,  5),
+        "energy_kwh":    round(energy, 5),
+        "carbon_kg":     round(carbon, 5),
+        "water_liters":  round(water,  5),
     }
 
 
@@ -123,6 +185,7 @@ def route(complexity: str) -> dict:
     complexity_order = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
     query_level = complexity_order.get(complexity, 1)
 
+    # Filter candidate models by complexity capability
     candidates = {}
     for model_id, config in models.items():
         model_max = complexity_order.get(config.get("max_complexity", "HIGH"), 2)
@@ -135,6 +198,7 @@ def route(complexity: str) -> dict:
     if not candidates:
         candidates = {k: v for k, v in models.items() if k == "medium_model"}
 
+    # Score each candidate
     scored = {mid: compute_green_score(cfg, weights) for mid, cfg in candidates.items()}
 
     selected_id     = max(scored, key=scored.get)
@@ -145,12 +209,12 @@ def route(complexity: str) -> dict:
     for mid, score in scored.items():
         m = models[mid]
         comparison.append({
-            "model_id":    mid,
-            "name":        m["name"],
-            "accuracy":    m["accuracy"],
+            "model_id":   mid,
+            "name":       m["name"],
+            "accuracy":   m["accuracy"],
             "green_score": score,
-            "energy_kwh":  m["energy_kwh"],
-            "selected":    mid == selected_id,
+            "energy_kwh": m["energy_kwh"],
+            "selected":   mid == selected_id,
         })
     comparison.sort(key=lambda x: x["green_score"], reverse=True)
 
