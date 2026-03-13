@@ -71,9 +71,15 @@ const Index = () => {
     <Download className="mr-2 h-4 w-4" /> Download Extension
   </a>
 </Button>
-                <Button size="lg" variant="outline">
-                  <Terminal className="mr-2 h-4 w-4" /> Download Middleware
-                </Button>
+                <Button
+  size="lg"
+  className="bg-gradient-primary text-primary-foreground shadow-glow"
+  asChild
+>
+  <a href="/neuroroute-middleware-extension.zip" download>
+    <Download className="mr-2 h-4 w-4" /> Download Middleware
+  </a>
+</Button>
                 {/* <Button size="lg" variant="ghost" asChild>
                   <Link to="/architecture"><ArrowRight className="mr-2 h-4 w-4" /> View Documentation</Link>
                 </Button> */}

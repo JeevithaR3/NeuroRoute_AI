@@ -1,0 +1,117 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  NeuroRoute — Model Registry
+#  ──────────────────────────────────────────────────────────────────────────
+#  HOW TO PLUG IN YOUR OWN MODELS
+#  ──────────────────────────────────────────────────────────────────────────
+#  1. Fill in `endpoint`     → any OpenAI-compatible /v1/chat/completions URL
+#  2. Fill in `api_key_env`  → name of your environment variable holding the key
+#                              (leave "" for local models that need no key)
+#  3. Fill in `model_name`   → the model string your endpoint expects
+#  4. Tune `energy_kwh`, `accuracy`, `latency_seconds` to match your model
+#  5. Set `max_complexity`   → LOW | MEDIUM | HIGH
+#                              NeuroRoute will never send a complex query to a
+#                              model you've capped at LOW.
+#
+#  EXAMPLES OF COMPATIBLE ENDPOINTS
+#  ─────────────────────────────────
+#  OpenAI          : https://api.openai.com/v1/chat/completions
+#  Groq            : https://api.groq.com/openai/v1/chat/completions
+#  Ollama (local)  : http://localhost:11434/v1/chat/completions
+#  Together AI     : https://api.together.xyz/v1/chat/completions
+#  Azure OpenAI    : https://<your-resource>.openai.azure.com/openai/deployments/<deploy>/chat/completions?api-version=2024-02-01
+#  vLLM (local)    : http://localhost:8000/v1/chat/completions
+#  LM Studio       : http://localhost:1234/v1/chat/completions
+#  Your own server : http://your-gpu-server.com/v1/chat/completions
+#
+#  ENERGY VALUES (reference)
+#  ──────────────────────────
+#  Small  model (~7B params)  : 0.001 kWh per query
+#  Medium model (~13B params) : 0.003 kWh per query
+#  Large  model (~70B params) : 0.010 kWh per query
+#  GPT-4                      : ~0.010 kWh per query (estimated)
+#  GPT-4o-mini                : ~0.002 kWh per query (estimated)
+# ══════════════════════════════════════════════════════════════════════════════
+
+models:
+
+  # ── TIER 1: Small / Fast model ─────────────────────────────────────────────
+  # Used for LOW complexity queries: simple questions, definitions, math
+  small_model:
+    name: "Small LLM"
+    description: "Fast lightweight model for simple factual queries"
+
+    # ↓ REPLACE THESE WITH YOUR OWN
+    endpoint:    "https://api.groq.com/openai/v1/chat/completions"
+    api_key_env: "GROQ_API_KEY"          # env var name, not the key itself
+    model_name:  "llama-3.1-8b-instant"  # model string your endpoint expects
+
+    # Performance + green profile
+    accuracy:         0.78
+    latency_seconds:  0.3
+    energy_kwh:       0.001
+    carbon_per_kwh:   0.4    # kg CO2 per kWh — adjust for your region/provider
+    water_per_kwh:    1.5    # liters per kWh — cooling factor
+    max_complexity:   LOW
+    max_tokens:       300
+
+  # ── TIER 2: Medium / Balanced model ────────────────────────────────────────
+  # Used for MEDIUM complexity: summaries, explanations, analysis
+  medium_model:
+    name: "Medium LLM"
+    description: "Balanced model for summarization and moderate reasoning"
+
+    # ↓ REPLACE THESE WITH YOUR OWN
+    endpoint:    "https://api.groq.com/openai/v1/chat/completions"
+    api_key_env: "GROQ_API_KEY"
+    model_name:  "llama-3.1-8b-instant"
+
+    accuracy:         0.90
+    latency_seconds:  1.5
+    energy_kwh:       0.003
+    carbon_per_kwh:   0.4
+    water_per_kwh:    1.5
+    max_complexity:   MEDIUM
+    max_tokens:       500
+
+  # ── TIER 3: Large / Powerful model ─────────────────────────────────────────
+  # Used for HIGH complexity: deep research, complex reasoning, coding
+  # TIP: Point this at a LOCAL Ollama model to get real CPU→GPU shift on your
+  #      machine. e.g. endpoint: "http://localhost:11434/v1/chat/completions"
+  large_model:
+    name: "Large LLM"
+    description: "Powerful model for complex reasoning and research tasks"
+
+    # ↓ REPLACE THESE WITH YOUR OWN
+    endpoint:    "https://api.groq.com/openai/v1/chat/completions"
+    api_key_env: "GROQ_API_KEY"
+    model_name:  "llama-3.3-70b-versatile"
+
+    accuracy:         0.97
+    latency_seconds:  4.0
+    energy_kwh:       0.010
+    carbon_per_kwh:   0.4
+    water_per_kwh:    1.5
+    max_complexity:   HIGH
+    max_tokens:       1024
+
+
+# ── Routing weights ─────────────────────────────────────────────────────────
+# Controls how NeuroRoute balances accuracy vs green impact when scoring models.
+# All weights must sum to 1.0
+# accuracy : how much to reward higher-accuracy models
+# carbon   : how much to penalize high-carbon models
+# water    : how much to penalize high-water-usage models
+# latency  : how much to penalize slow models
+routing_weights:
+  accuracy: 0.50
+  carbon:   0.25
+  water:    0.15
+  latency:  0.10
+
+
+# ── System prompts (optional override) ──────────────────────────────────────
+# NeuroRoute uses built-in prompts. Override here if needed.
+# Leave this section out to use defaults.
+# system_prompts:
+#   summarize: "You are a precise summarization assistant..."
+#   explain:   "You are a clear explanation assistant..."
