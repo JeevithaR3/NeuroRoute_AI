@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>NeuroRoute — Green AI Intelligence Dashboard</title>
+<title>NeuroRoute — AI Intelligence Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"><style>
 :root {
   --bg:      #020508;
   --glass:   rgba(7,20,32,0.75);
-  --green:   #00f5a0;
+  --green:   #ff7f00;
   --green2:  #00c97d;
   --green3:  rgba(0,245,160,0.12);
   --cyan:    #00d4ff;
@@ -66,9 +65,9 @@ header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify
 /* ── hero ── */
 .hero{position:relative;z-index:1;padding:40px 48px 0;max-width:1440px;margin:0 auto;}
 .hero-inner{background:linear-gradient(135deg,rgba(0,245,160,.04) 0%,rgba(0,212,255,.025) 50%,rgba(167,139,250,.025) 100%);border:1px solid var(--b1);border-radius:24px;padding:36px 48px;display:flex;align-items:center;justify-content:space-between;gap:32px;position:relative;overflow:hidden;}
-.hero-inner::before{content:'';position:absolute;top:0;left:-100%;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,245,160,.5),rgba(0,212,255,.4),transparent);animation:hl 4s ease-in-out infinite;}
+.hero-inner::before{content:'';position:absolute;top:0;left:-100%;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff7f00,#cc8800,transparent);animation:hl 4s ease-in-out infinite;}
 @keyframes hl{0%{left:-100%;}100%{left:100%;}}
-.hero-txt h2{font-family:var(--disp);font-size:52px;letter-spacing:.04em;line-height:1;margin-bottom:12px;background:linear-gradient(135deg,#fff 30%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-txt h2{font-family:var(--disp);font-size:52px;letter-spacing:.04em;line-height:1;margin-bottom:12px;background:linear-gradient(135deg,#ff7f00 30%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-txt p{font-size:15px;color:var(--text2);max-width:480px;line-height:1.7;}
 .hero-nums{display:flex;gap:36px;flex-shrink:0;}
 .hn{text-align:center;}
@@ -319,12 +318,12 @@ footer{position:relative;z-index:1;display:flex;align-items:center;justify-conte
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
         <path d="M11 2L20 7V15L11 20L2 15V7L11 2Z" stroke="url(#g1)" stroke-width="1.5"/>
         <circle cx="11" cy="11" r="3" fill="url(#g1)" opacity=".9"/>
-        <defs><linearGradient id="g1" x1="2" y1="2" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop stop-color="#00f5a0"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
+        <defs><linearGradient id="g1" x1="2" y1="2" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop stop-color="#ff7f00"/><stop offset="1" stop-color="#ff7f00"/></linearGradient></defs>
       </svg>
     </div>
     <div class="logo-words">
       <h1>NeuroRoute</h1>
-      <span>Green AI Routing System · v1.0</span>
+      <span>AI Routing System</span>
     </div>
   </div>
   <div class="hnav">
@@ -337,7 +336,7 @@ footer{position:relative;z-index:1;display:flex;align-items:center;justify-conte
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-txt">
-      <h2>INTELLIGENT GREEN ROUTING</h2>
+      <h2>INTELLIGENT ROUTING</h2>
       <p>Real-time AI query routing to the most energy-efficient model. Every query is analyzed, classified, and dispatched to minimize carbon footprint without sacrificing quality.</p>
     </div>
     <div class="hero-nums">
@@ -374,9 +373,9 @@ footer{position:relative;z-index:1;display:flex;align-items:center;justify-conte
 
   <!-- Gauges -->
   <section>
-    <div class="sh"><div class="sh-dot"></div><span class="sh-label">Green Savings · Speedometer Comparison</span><div class="sh-line"></div></div>
+    <div class="sh"><div class="sh-dot"></div><span class="sh-label">Savings · Speedometer Comparison</span><div class="sh-line"></div></div>
     <div class="panel">
-      <div class="ph"><span class="pt">🌍 NeuroRoute vs All-Large Baseline</span><span class="pb" id="savings-badge">Live · 5s</span></div>
+      <div class="ph"><span class="pt">NeuroRoute vs All-Large Baseline</span><span class="pb" id="savings-badge">Live · 5s</span></div>
       <div class="pbd" id="savings-panel"><div class="shim"></div><div class="shim" style="width:60%"></div></div>
     </div>
   </section>
@@ -412,8 +411,8 @@ footer{position:relative;z-index:1;display:flex;align-items:center;justify-conte
 
 <footer>
   <div class="fl">NeuroRoute</div>
-  <div class="fi">Green AI Routing System · Layer 3 Dashboard · Auto-refreshes every 10s</div>
-  <div class="fv">v1.0.0</div>
+  <div class="fi">AI Routing System · Layer 3 Dashboard · Auto-refreshes every 10s</div>
+ 
 </footer>
 
 <script>
@@ -494,9 +493,9 @@ function renderStats(stats){
   /* impact */
   const pq=n>0?{e:stats.total_energy_kwh/n,c:stats.total_carbon_kg/n,w:stats.total_water_liters/n}:{e:0,c:0,w:0};
   document.getElementById("impact-detail").innerHTML=`
-    <div class="ir"><div class="il"><div class="iic">⚡</div><div><div class="it">Energy / Query</div><div class="is">avg kWh per request</div></div></div><div class="iv">${fmt(pq.e,6)}</div></div>
-    <div class="ir"><div class="il"><div class="iic">🌱</div><div><div class="it">CO₂ / Query</div><div class="is">kg emissions per request</div></div></div><div class="iv">${fmt(pq.c,6)}</div></div>
-    <div class="ir"><div class="il"><div class="iic">💧</div><div><div class="it">Water / Query</div><div class="is">liters cooling per request</div></div></div><div class="iv">${fmt(pq.w,6)}</div></div>`;
+    <div class="ir"><div class="il"><div><div class="it">Energy / Query</div><div class="is">avg kWh per request</div></div></div><div class="iv">${fmt(pq.e,6)}</div></div>
+    <div class="ir"><div class="il"><div><div class="it">CO₂ / Query</div><div class="is">kg emissions per request</div></div></div><div class="iv">${fmt(pq.c,6)}</div></div>
+    <div class="ir"><div class="il"><div><div class="it">Water / Query</div><div class="is">liters cooling per request</div></div></div><div class="iv">${fmt(pq.w,6)}</div></div>`;
 
   /* ════════ GAUGES ════════ */
   const LKW=0.010,LC=0.004,LW=0.015;
@@ -524,7 +523,7 @@ function renderStats(stats){
       </div>
       <div class="gw" id="gauge-wrap">
         <div class="gc gg">
-          <div class="gt">⚡ Energy (kWh)</div>
+          <div class="gt">Energy (kWh)</div>
           <canvas id="g-energy" width="240" height="152"></canvas>
           <div class="gv">
             <div class="gvr"><span class="gvrl">NeuroRoute</span><span class="gvrv" id="gv-e-nr" style="color:var(--green)">—</span></div>
@@ -532,7 +531,7 @@ function renderStats(stats){
           </div>
         </div>
         <div class="gc gg">
-          <div class="gt">🌱 CO₂ (kg)</div>
+          <div class="gt">CO₂ (kg)</div>
           <canvas id="g-carbon" width="240" height="152"></canvas>
           <div class="gv">
             <div class="gvr"><span class="gvrl">NeuroRoute</span><span class="gvrv" id="gv-c-nr" style="color:var(--green)">—</span></div>
@@ -540,7 +539,7 @@ function renderStats(stats){
           </div>
         </div>
         <div class="gc gcn">
-          <div class="gt">💧 Water (L)</div>
+          <div class="gt">Water (L)</div>
           <canvas id="g-water" width="240" height="152"></canvas>
           <div class="gv">
             <div class="gvr"><span class="gvrl">NeuroRoute</span><span class="gvrv" id="gv-w-nr" style="color:var(--cyan)">—</span></div>
@@ -549,7 +548,7 @@ function renderStats(stats){
         </div>
       </div>
       <div class="sb">
-        <span class="sb-icon">🏆</span>
+        <span class="sb-icon"></span>
         <div><div class="sb-main" id="savings-main">—</div>
         <div class="sb-sub">Dial: 0 → All-Large max &nbsp;·&nbsp; Green needle = NeuroRoute &nbsp;·&nbsp; Red needle = Baseline &nbsp;·&nbsp; Fluctuates every 5s</div></div>
       </div>`;
@@ -725,10 +724,27 @@ function renderHardware(hw){
 
   /* ── banner config ── */
   const bannerMap = {
-    CPU:       { cls:"mode-cpu",   icon:"🖥️",  badge:"CPU MODE",             desc:"Routing to lightweight models — CPU handling all inference." },
-    GPU:       { cls:"mode-gpu",   icon:"⚡",  badge:"GPU ACTIVE",           desc:"Medium-complexity queries detected — GPU has taken over inference." },
-    GPU_SHIFT: { cls:"mode-shift", icon:"🚀",  badge:"⚡ COMPUTE SHIFT → GPU", desc:"Heavy model active (llama-3.3-70b) — compute load transferred to GPU." },
-  };
+  CPU: {
+    cls: "mode-cpu",
+    icon: "🖥️",
+    badge: "CPU MODE",
+    desc: "Routing to lightweight models — CPU handling all inference."
+  },
+
+  GPU: {
+    cls: "mode-gpu",
+    icon: "⚡",
+    badge: "GPU ACTIVE",
+    desc: "Medium-complexity queries detected — GPU has taken over inference."
+  },
+
+  GPU_SHIFT: {
+    cls: "mode-shift",
+    icon: "🚀",
+    badge: "COMPUTE SHIFT → GPU",
+    desc: "Heavy model active (llama-3.3-70b) — compute load transferred to GPU."
+  }
+};
   const b = bannerMap[mode] || bannerMap.CPU;
 
   /* ── arrow flow class ── */
@@ -759,7 +775,7 @@ function renderHardware(hw){
     <div class="cs-flow">
 
       <div class="cs-node csn-cpu ${cpuNodeCls}">
-        <div class="cs-node-icon">🖥️</div>
+        
         <div class="cs-node-name">CPU</div>
         <div class="cs-node-pct" style="color:${cpuCol}">${hw.cpu_usage_pct}<span style="font-size:16px;font-family:var(--ui);font-weight:300">%</span></div>
         <div class="cs-node-sub">${hw.cpu_cores} cores · ${hw.os}</div>
@@ -772,7 +788,7 @@ function renderHardware(hw){
       </div>
 
       <div class="cs-node csn-ram">
-        <div class="cs-node-icon">💾</div>
+        
         <div class="cs-node-name">RAM</div>
         <div class="cs-node-pct" style="color:${ramCol}">${hw.ram_pct}<span style="font-size:16px;font-family:var(--ui);font-weight:300">%</span></div>
         <div class="cs-node-sub">${hw.ram_used_gb} / ${hw.ram_gb} GB</div>
@@ -785,7 +801,7 @@ function renderHardware(hw){
       </div>
 
       <div class="cs-node csn-gpu ${gpuNodeCls}">
-        <div class="cs-node-icon">⚡</div>
+       
         <div class="cs-node-name">GPU</div>
         <div class="cs-node-pct" style="color:${gpuCol}">${hw.gpu_usage_pct}<span style="font-size:16px;font-family:var(--ui);font-weight:300">%</span></div>
         <div class="cs-node-sub">${hw.gpu_name.replace("Simulated GPU (no CUDA detected)","Simulated").slice(0,22)}</div>
@@ -798,7 +814,7 @@ function renderHardware(hw){
       <div class="cs-shiftbar-label">
         <span>CPU Only</span>
         <span style="font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:${mode==='GPU_SHIFT'?'var(--amber)':mode==='GPU'?'var(--purple)':'var(--green)'}">
-          ${mode==='GPU_SHIFT'?'🚀 Compute Shifted to GPU':mode==='GPU'?'⚡ GPU Active':'🖥️ CPU Handling'}
+          ${mode==='GPU_SHIFT'?' Compute Shifted to GPU':mode==='GPU'?'GPU Active':'CPU Handling'}
           — ${shift}% GPU load
         </span>
         <span>GPU Full</span>
@@ -857,7 +873,7 @@ function renderDatasets(ds){
   const el=document.getElementById("dataset-panel");
   const entries=Object.entries(ds),total=entries.reduce((a,[,v])=>a+v.rows,0);
   document.getElementById("ds-badge").textContent=`${total} total rows`;
-  const ic={"routing_classifier_dataset.csv":"🧠","environmental_impact_dataset.csv":"🌱","full_neuroroute_dataset.csv":"📊"};
+  const ic={"routing_classifier_dataset.csv":"📄","environmental_impact_dataset.csv":"🌱","full_neuroroute_dataset.csv":"📊"};
   const lb={"routing_classifier_dataset.csv":"Routing Classifier","environmental_impact_dataset.csv":"Environmental Impact","full_neuroroute_dataset.csv":"Full NeuroRoute Dataset"};
   const de={"routing_classifier_dataset.csv":"Trains query complexity classifier for intelligent green routing","environmental_impact_dataset.csv":"Trains energy, carbon & water impact predictor model","full_neuroroute_dataset.csv":"Complete feature set for intelligent green routing model"};
   el.innerHTML=`<div class="dsg">${entries.map(([name,info])=>`
